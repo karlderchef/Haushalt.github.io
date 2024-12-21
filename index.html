@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haushaltsplan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Haushaltsplan</h1>
+        <div class="form-group">
+            <label for="aufgabe">1. Aufgabe:</label>
+            <select id="aufgabe">
+                <option value="Staubsaugen">Staubsaugen</option>
+                <option value="Spüli ausräumen">Spüli ausräumen</option>
+                <option value="Wäsche">Wäsche</option>
+                <option value="Tische wischen">Tische wischen</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="person">2. Wer:</label>
+            <select id="person">
+                <option value="Celine">Celine</option>
+                <option value="Silvio">Silvio</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="datum">3. Wann:</label>
+            <input type="date" id="datum">
+        </div>
+        <div class="form-group">
+            <label for="erledigt">4. Erledigt:</label>
+            <select id="erledigt">
+                <option value="Ja">Ja</option>
+                <option value="Nein">Nein</option>
+            </select>
+        </div>
+        <div class="buttons">
+            <button id="addTask" class="btn blue">Aufgabe hinzufügen</button>
+            <button id="deleteTask" class="btn red">Aufgabe löschen</button>
+        </div>
+        <table id="taskTable">
+            <thead>
+                <tr>
+                    <th>Aufgabe</th>
+                    <th>Wer</th>
+                    <th>Datum</th>
+                    <th>Erledigt</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aufgaben werden hier hinzugefügt -->
+            </tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
