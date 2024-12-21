@@ -1,59 +1,197 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haushaltsplan</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task span {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .task .date {
+            color: #888;
+        }
+
+        .task button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .task button:hover {
+            background-color: #cc0000;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Haushaltsplan</h1>
-        <div class="form-group">
-            <label for="aufgabe">1. Aufgabe:</label>
-            <select id="aufgabe">
-                <option value="Staubsaugen">Staubsaugen</option>
-                <option value="Spüli ausräumen">Spüli ausräumen</option>
-                <option value="Wäsche">Wäsche</option>
-                <option value="Tische wischen">Tische wischen</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="person">2. Wer:</label>
-            <select id="person">
-                <option value="Celine">Celine</option>
-                <option value="Silvio">Silvio</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="datum">3. Wann:</label>
-            <input type="date" id="datum">
-        </div>
-        <div class="form-group">
-            <label for="erledigt">4. Erledigt:</label>
-            <select id="erledigt">
-                <option value="Ja">Ja</option>
-                <option value="Nein">Nein</option>
-            </select>
-        </div>
-        <div class="buttons">
-            <button id="addTask" class="btn blue">Aufgabe hinzufügen</button>
-            <button id="deleteTask" class="btn red">Aufgabe löschen</button>
-        </div>
-        <table id="taskTable">
-            <thead>
-                <tr>
-                    <th>Aufgabe</th>
-                    <th>Wer</th>
-                    <th>Datum</th>
-                    <th>Erledigt</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Aufgaben werden hier hinzugefügt -->
-            </tbody>
-        </table>
-    </div>
-    <script src="script.js"></script>
+
+    <h1>Haushaltsplan</h1>
+    
+    <form id="taskForm">
+        <label for="task">Aufgabe:</label>
+        <input type="text" id="task" required><br>
+
+        <label for="person">Wer:</label>
+        <select id="person">
+            <option value="Celine">Celine</option>
+            <option value="Silvio">Silvio</option>
+        </select><br>
+
+        <label for="date">Wann:</label>
+        <input type="date" id="date" required><br>
+
+        <button type="submit">Aufgabe hinzufügen</button>
+    </form>
+
+    <h2>Aufgaben</h2>
+    <ul id="taskList"></ul>
+
+    <script>
+        // Funktion zum Laden der Aufgaben aus dem LocalStorage
+        function loadTasks() {
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = ''; // Vorherige Liste löschen
+
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.classList.add('task');
+
+                li.innerHTML = `
+                    <span>${task.task} (von ${task.person}, am <span class="date">${task.date}</span>)</span>
+                    <button onclick="deleteTask(${index})">Löschen</button>
+                `;
+
+                taskList.appendChild(li);
+            });
+        }
+
+        // Automatisch das heutige Datum in das "Wann"-Feld setzen
+        function setTodayDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = ("0" + (today.getMonth() + 1)).slice(-2);  // Monat mit führender Null
+            const day = ("0" + today.getDate()).slice(-2);  // Tag mit führender Null
+
+            const dateString = `${year}-${month}-${day}`;  // Format YYYY-MM-DD
+            document.getElementById('date').value = dateString;
+        }
+
+        // Aufgabe hinzufügen
+        document.getElementById('taskForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const taskInput = document.getElementById('task');
+            const personSelect = document.getElementById('person');
+            const dateInput = document.getElementById('date');
+
+            const task = taskInput.value.trim();
+            const person = personSelect.value;
+            const date = dateInput.value;
+
+            if (task !== '' && date !== '') {
+                let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+                tasks.push({ task, person, date });
+
+                // Speichern der Aufgaben im LocalStorage
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+
+                // Aufgaben neu laden und Anzeige aktualisieren
+                loadTasks();
+
+                // Eingabefelder leeren
+                taskInput.value = '';
+            }
+        });
+
+        // Aufgabe löschen
+        function deleteTask(index) {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.splice(index, 1); // Aufgabe entfernen
+
+            // Aufgaben neu speichern
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+
+            // Aufgaben neu laden
+            loadTasks();
+        }
+
+        // Aufgaben beim Laden der Seite anzeigen
+        loadTasks();
+
+        // Setze das heutige Datum beim Laden der Seite
+        setTodayDate();
+    </script>
+
 </body>
 </html>
