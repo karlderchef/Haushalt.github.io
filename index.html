@@ -1,10 +1,58 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+
+    <link rel="stylesheet" href="styles.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haushaltsplan</title>
     <style>
+body {
+        font-family: Arial, sans-serif;
+        background: url('fishing-8842590_1920.jpg') no-repeat center center fixed; /* Hintergrundbild */
+        background-size: 1280px 1024px; /* Bild an die Seite anpassen */
+        margin: 0;
+        padding: 10px;
+        color: #333; /* Textfarbe */
+    }
+
+    h1, h2 {
+        color: red; /* Überschriften lesbar machen */
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* Leichter Textschatten */
+    }
+
+    form {
+        background-color: rgba(1, 255, 255, 0.9); /* Weiß mit Transparenz */
+        padding: 10px;
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        background-color: rgba(255, 255, 255, 0.9); /* Weiß mit Transparenz */
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+
+.copyright {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 12px;
+    color: #888;
+    font-family: Arial, sans-serif;
+}
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -31,7 +79,7 @@
         }
 
         input, select {
-            width: 100%;
+            width: 25%;
             padding: 8px;
             margin-bottom: 12px;
             border-radius: 4px;
@@ -75,10 +123,6 @@
             color: #333;
         }
 
-        .task .date {
-            color: #888;
-        }
-
         .task button {
             background-color: red;
             color: white;
@@ -101,14 +145,17 @@
         <label for="task">Aufgabe:</label>
         <input type="text" id="task" required><br>
 
-        <label for="person">Wer:</label>
-        <select id="person">
-            <option value="Celine">Celine</option>
-            <option value="Silvio">Silvio</option>
-        </select><br>
+        <label for="wer">Wer:</label>
+        <input type="text" id="wer" required><br>
 
         <label for="date">Wann:</label>
         <input type="date" id="date" required><br>
+
+        <label for="done">Erledigt?:</label>
+        <select id="done">
+            <option value="nein" selected>nein</option>
+            <option value="ja">ja</option>
+        </select><br>
 
         <button type="submit">Aufgabe hinzufügen</button>
     </form>
@@ -127,8 +174,9 @@
                 const li = document.createElement('li');
                 li.classList.add('task');
 
+                // Aufgabenanzeige
                 li.innerHTML = `
-                    <span>${task.task} (von ${task.person}, am <span class="date">${task.date}</span>)</span>
+                    <span>${task.task} - ${task.person} bis zum ${task.date} - erledigt: ${task.done}</span>
                     <button onclick="deleteTask(${index})">Löschen</button>
                 `;
 
@@ -152,16 +200,27 @@
             e.preventDefault();
 
             const taskInput = document.getElementById('task');
-            const personSelect = document.getElementById('person');
+            const personInput = document.getElementById('wer');
             const dateInput = document.getElementById('date');
+            const doneSelect = document.getElementById('done');
 
             const task = taskInput.value.trim();
-            const person = personSelect.value;
+            let person = personInput.value.trim();
             const date = dateInput.value;
+            const done = doneSelect.value;
 
-            if (task !== '' && date !== '') {
+            if (task !== '' && date !== '' && person !== '') {
+                // Den Namen formatieren, sodass der erste Buchstabe groß ist
+                person = person.charAt(0).toUpperCase() + person.slice(1).toLowerCase();
+
+                // Datum nur als Tag und Monat formatieren (ohne Jahr)
+                const formattedDate = new Date(date);
+                const day = ("0" + formattedDate.getDate()).slice(-2);
+                const month = ("0" + (formattedDate.getMonth() + 1)).slice(-2);  // Monat mit führender Null
+                const shortDate = `${day}.${month}`;  // Nur Tag und Monat speichern
+
                 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-                tasks.push({ task, person, date });
+                tasks.push({ task, person, date: shortDate, done });
 
                 // Speichern der Aufgaben im LocalStorage
                 localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -171,6 +230,8 @@
 
                 // Eingabefelder leeren
                 taskInput.value = '';
+                personInput.value = '';
+                doneSelect.value = 'nein';  // Setzt den Standardwert für "Erledigt"
             }
         });
 
@@ -192,6 +253,9 @@
         // Setze das heutige Datum beim Laden der Seite
         setTodayDate();
     </script>
+<div class="copyright">© Copyright Silvio Plechata</div>
+<script src="script.js"></script>
+
 
 </body>
 </html>
