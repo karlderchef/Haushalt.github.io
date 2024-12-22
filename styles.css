@@ -1,0 +1,100 @@
+/* Grundlegendes Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('fishing-8842590_1920.jpg') no-repeat center center fixed; /* Hintergrundbild */
+    background-size: top; /* Hintergrundbild füllt den gesamten Bereich */
+    color: #333;
+    display: flex;
+    justify-content: top; /* Zentriert das Formular horizontal */
+    align-items: center; /* Zentriert das Formular vertikal */
+    height: 85vh; /* Setzt die Höhe auf 100% der Viewport-Höhe */
+}
+
+/* Container für Formular und Aufgaben */
+.container {
+    width: 80%; /* Maximale Breite */
+    max-width: 100px; /* Maximale Breite des Formulars */
+    background: rgba(255, 255, 255, 0.8); /* Weißer Hintergrund mit Transparenz */
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Schatten für besseren Kontrast */
+    margin: 20px;
+}
+
+/* Formular-Titel */
+h1 {
+    position: absolute;
+    top: 20px;  /* Abstand von oben */
+    left: 20px; /* Abstand von links */
+    margin: 0;  /* Entfernt den Standardabstand */
+    font-size: 2em; /* Kann angepasst werden */
+    color: #333; /* Textfarbe */
+}
+/* Titel "Aufgaben" rechts oben */
+        h2 {
+            position: absolute;
+            top: 20px;  /* Abstand vom oberen Rand */
+            right: 100px; /* Abstand vom rechten Rand */
+            margin: 0;
+            font-size: 1.5em;
+            color: #333;
+}
+
+/* Formular-Eingaben */
+form label {
+        margin-bottom: 8px;
+    font-weight: bold;
+}
+
+form input, form select {
+    width: 100%; /* Eingabefelder passen sich der Containerbreite an */
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Formular-Button */
+form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+/* Aufgabenliste */
+ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            right: 20px; /* Aufgaben nach rechts verschieben */
+            top: 80px; /* Platz für den Titel */
+            width: 300px; /* Maximale Breite für Aufgaben */}
+
+li {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Fußzeile */
+footer {
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+    color: #fff;
+    font-size: 14px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}

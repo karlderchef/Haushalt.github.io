@@ -1,1 +1,1 @@
-Haushaltsplan mit verschiedenen Aufgaben und Personenwahl inklusive Datum mit Kalenderanzeige und checkbox ob erledigt.
+Haushaltsplan mit akutellem Datum und schönem Hintergrundbild
